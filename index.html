@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+ .calculator {
+    margin-top: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #343a40; /* Adjust border width, style, and color here */
+}
+
+        .display {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px;
+            text-align: right;
+        }
+
+        .buttons {
+            padding: 10px;
+        }
+
+        .btn-block {
+            border-radius: 0;
+            margin-bottom: 10px;
+        }
+
+        .btn-light {
+            background-color: #f8f9fa;
+        }
+
+        .btn-light:hover {
+            background-color: #e2e6ea;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+		h1 {
+           text-align: center;
+        }
+		
+    </style>
+</head>
+<body>
+    <div class="container">
+	       <h1>Calculator</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="calculator">
+                    <div class="display">
+                        <input type="text" id="display" class="form-control" readonly>
+                    </div>
+                    <div class="buttons">
+                        <div class="row">
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('7')">7</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('8')">8</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('9')">9</button></div>
+                            <div class="col-3"><button class="btn btn-danger btn-block" onclick="setOperation('/')">/</button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('4')">4</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('5')">5</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('6')">6</button></div>
+                            <div class="col-3"><button class="btn btn-danger btn-block" onclick="setOperation('*')">*</button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('1')">1</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('2')">2</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('3')">3</button></div>
+                            <div class="col-3"><button class="btn btn-danger btn-block" onclick="setOperation('-')">-</button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('0')">0</button></div>
+                            <div class="col-3"><button class="btn btn-light btn-block" onclick="appendNumber('.')">.</button></div>
+                            <div class="col-3"><button class="btn btn-success btn-block" onclick="calculate()">=</button></div>
+                            <div class="col-3"><button class="btn btn-danger btn-block" onclick="setOperation('+')">+</button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><button class="btn btn-secondary btn-block" onclick="clearField()">C Field</button></div>
+                            <div class="col-6"><button class="btn btn-secondary btn-block" onclick="clearDisplay()">C All</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOperation = '';
+        let currentValue = '';
+
+        function appendNumber(number) {
+            currentValue += number;
+            updateDisplay();
+        }
+
+        function setOperation(operation) {
+            if (currentValue === '' && currentOperation === '') return; // Prevents setting operation if there's no value
+            if (currentValue !== '') {
+                currentOperation += currentValue + ' ' + operation + ' ';
+                currentValue = '';
+            } else if (currentOperation !== '') {
+                currentOperation = currentOperation.slice(0, -3) + ' ' + operation + ' ';
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentOperation = '';
+            currentValue = '';
+            updateDisplay();
+        }
+
+        function clearField() {
+            currentValue = '';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('display').value = currentOperation + currentValue;
+        }
+
+        function calculate() {
+            if (currentValue === '' || currentOperation === '') return;
+
+            try {
+                let result = eval(currentOperation + currentValue);
+                currentValue = result;
+                currentOperation = '';
+                updateDisplay();
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
